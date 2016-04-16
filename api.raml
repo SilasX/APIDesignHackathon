@@ -1,0 +1,198 @@
+#%RAML 0.8
+title: sao-mulesoft
+version: 1.0.0
+documentation:
+  - title: MuleSoft Project Test
+    content: |
+      Delete a project from the list
+      Get information about a specific project from the list
+      Update information for a specific project tool
+      Retrieve the complete list of projects
+      Delete the complete list of projects 
+
+baseUri: http://{host}:{port}/{version}
+#baseUri: http://mocksvc.mulesoft.com/mocks/1806b846-714b-4744-be1a-60e4a9e90173/api/{version}
+
+resourceTypes:
+  - collection:
+      get:
+        
+      post:
+      
+
+/projects:
+  uriParameters:
+  displayName: Projects
+  description: A collection of online projects
+  post:
+    description: Add a project to the list
+    body:
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "project": {
+                "name": {
+                    "required": true,
+                    "type": "string"
+                },
+                "description": {
+                    "required": true,
+                    "type": "string"
+                },                
+                "url": {
+                    "required": true,
+                    "type": "string"
+                },                
+                "opensource": {
+                    "required": true,
+                    "type": "boolean"
+                }
+            },
+            "required": true,
+            "type": "object"
+          }        
+        example: |
+          {
+            "project": {
+              "name": "Project",
+              "description": "This is a short description of the project.",
+              "url": "http://mulesoft.com",
+              "opensource": "true"
+            }
+          }
+      multipart/form-data:
+        
+  get:
+    description: Get the list of available projects
+    queryParameters:
+      q:
+        description: Search phrase to look for in  project
+        type: string
+        required: false
+    responses:
+      200:
+        body:
+          application/json: 
+            
+            example: |
+              {
+                "projects":{
+                  "projectA":"A"
+                  "projectB":"B"
+                  "projectC":"C"
+                  "projectD":"D"
+                }
+              }
+          application/xml:
+            schema: |
+                
+            example: |
+              <projects>
+                <projectA>A</projectA>
+                <projectB>B</projectB>
+                <projectC>C</projectC>
+                <projectD>D</projectD>
+              </projects>  
+      401:
+      403:
+      415:
+      500:
+      
+  delete:
+    description: Delete all online projects
+    responses:
+      200:
+        body:
+          application/json:
+            #example: !include schema/test-project-list.json
+             
+  /{projectname}: 
+    description: | # Retrieve a specific project using its name.
+    uriParameters:
+     projectname:
+       displayName: Project name
+       type: string    
+    get:
+      description: Get a single project
+      queryParameters:
+        projectname:
+          description: The name of the project
+          type: string
+          required: true
+      responses:
+        200:
+          body:
+            application/xml:
+            application/json: 
+              #example: !include schema/tet-project-list.json
+    put:
+      description: Updates a single project
+      queryParameters:
+        toolname:
+          description: The name of the project
+          type: string
+          required: true
+      body:
+        application/json:
+          schema: |
+            {
+              "$schema": "http://json-schema.org/draft-03/schema",
+              "project": {
+                  "name": {
+                      "required": true,
+                      "type": "string"
+                  },
+                  "description": {
+                      "required": true,
+                      "type": "string"
+                  },                
+                  "url": {
+                      "required": true,
+                      "type": "string"
+                  },                
+                  "opensource": {
+                      "required": true,
+                      "type": "boolean"
+                  }
+              },
+              "required": true,
+              "type": "object"
+            }        
+          example: |
+            {
+              "project": {
+                "name": "Project One",
+                "description": "This is a short description of the project.",
+                "url": "http://mulesoft.com",
+                "opensource": "true"
+              }
+            }
+        application/xml:
+          schema: |
+                
+          example: |
+            <project>
+              <name>Project One</name>
+              <description>This is a short description of the project
+              </description>
+              <url>http://mulesoft.com</url>
+              <opensource>true</opensource>
+            </project>  
+      responses:
+        200:
+          body:
+            application/json: 
+              #example: !include schema/test-project-list.json  
+    delete:
+      description: Delete a single project from the list
+      queryParameters:
+        toolname:
+          description: The name of the project
+          type: string
+          required: true
+      responses:
+        200:
+          body:
+            application/json: 
+              #example: !include schema/test-project-list.json                          
